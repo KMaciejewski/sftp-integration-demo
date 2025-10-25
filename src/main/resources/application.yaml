@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: sftp-integration-demo
+
+sftp:
+  host:
+  port:
+  user:
+  private-key:
+  known-hosts:
