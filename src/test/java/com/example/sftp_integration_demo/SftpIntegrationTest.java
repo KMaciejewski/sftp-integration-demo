@@ -32,7 +32,6 @@ class SftpIntegrationTest {
 
     @Container
     private static final GenericContainer<?> sftpContainer = new GenericContainer<>("atmoz/sftp:latest")
-            .withExposedPorts(22)
             .withEnv("SFTP_USERS", SFTP_USER + "::::upload")
             .withCopyFileToContainer(
                     MountableFile.forHostPath(CLIENT_PUBLIC_KEY.getAbsolutePath()), "/home/testuser/.ssh/authorized_keys"
