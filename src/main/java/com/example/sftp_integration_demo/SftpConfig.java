@@ -20,10 +20,10 @@ public class SftpConfig {
     @Value("${sftp.user}")
     private String user;
 
-    @Value("${sftp.private-key}")
+    @Value("${sftp.private-key-path}")
     private String privateKeyPath;
 
-    @Value("${sftp.known-hosts}")
+    @Value("${sftp.ssh-known-hosts}")
     private String knownHostsPath;
 
     @Bean

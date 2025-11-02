@@ -1,7 +1,0 @@
-
-sftp:
-  host: localhost
-  port: 2222
-  user: testuser
-  private-key: "src/test/resources/client_keys/id_rsa"
-  known-hosts: "src/test/resources/known_hosts/known_hosts"

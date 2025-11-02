@@ -30,3 +30,8 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### SSH Keys for SFTP IT ###
+/src/test/resources/ssh_client_keys/
+/src/test/resources/ssh_known_hosts/
+/src/test/resources/ssh_server_host_keys/

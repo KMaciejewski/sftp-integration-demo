@@ -6,5 +6,5 @@ sftp:
   host:
   port:
   user:
-  private-key:
-  known-hosts:
+  private-key-path:
+  ssh-known-hosts:

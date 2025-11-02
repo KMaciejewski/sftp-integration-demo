@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.Container.ExecResult;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
@@ -21,17 +23,22 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @ActiveProfiles("test")
 @Testcontainers
-@SpringBootTest
+@SpringBootTest(classes = {SftpService.class, SftpConfig.class})
 class SftpIntegrationTest {
 
     private static final String SFTP_USER = "testuser";
-    private static final String CLIENT_KEYS_PATH = "src/test/resources/client_keys/";
-    private static final String HOST_KEYS_PATH = "src/test/resources/host_keys/";
+    private static final String CLIENT_KEYS_PATH = "src/test/resources/ssh_client_keys/";
+    private static final String HOST_KEYS_PATH = "src/test/resources/ssh_server_host_keys/";
+    private static final String KNOWN_HOSTS_PATH = "src/test/resources/ssh_known_hosts/known_hosts";
 
     private static final File CLIENT_PUBLIC_KEY = new File(CLIENT_KEYS_PATH + "id_rsa.pub");
 
+    static {
+        SftpSshKeyGenerator.generate();
+    }
+
     @Container
-    private static final GenericContainer<?> sftpContainer = new GenericContainer<>("atmoz/sftp:latest")
+    GenericContainer<?> sftpContainer = new GenericContainer<>("atmoz/sftp:latest")
             .withEnv("SFTP_USERS", SFTP_USER + "::::upload")
             .withCopyFileToContainer(
                     MountableFile.forHostPath(CLIENT_PUBLIC_KEY.getAbsolutePath()), "/home/testuser/.ssh/authorized_keys"
@@ -42,6 +49,15 @@ class SftpIntegrationTest {
             )
             .withCopyFileToContainer(MountableFile.forHostPath(HOST_KEYS_PATH), "/etc/ssh")
             .waitingFor(Wait.forListeningPort());
+
+    @DynamicPropertySource
+    static void registerProperties(DynamicPropertyRegistry registry) {
+        registry.add("sftp.host", () -> "localhost");
+        registry.add("sftp.port", () -> 2222);
+        registry.add("sftp.user", () -> SFTP_USER);
+        registry.add("sftp.private-key-path", () -> CLIENT_KEYS_PATH + "id_rsa");
+        registry.add("sftp.ssh-known-hosts", () -> KNOWN_HOSTS_PATH);
+    }
 
     @Autowired
     private SftpService sftpService;
