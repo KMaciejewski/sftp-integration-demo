@@ -6,7 +6,6 @@ import com.github.dockerjava.api.model.Ports;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.Container.ExecResult;
@@ -21,7 +20,6 @@ import java.util.Objects;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@ActiveProfiles("test")
 @Testcontainers
 @SpringBootTest(classes = {SftpService.class, SftpConfig.class})
 class SftpIntegrationTest {

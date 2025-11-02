@@ -1,5 +1,2 @@
 # SFTP Integration Demo
-
-### Integration tests
-To run integration tests using maven execute commands using `test` profile: <br>
-```mvn clean verify -Dspring.profiles.active=test```
+This repository contains a simple demonstration of how to integrate SFTP (Secure File Transfer Protocol) functionality into your applications.<br> It includes example code for connecting to an SFTP server, uploading and downloading files, and handling common SFTP operations.
